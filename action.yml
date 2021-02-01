@@ -1,0 +1,33 @@
+name: 'Rust backwards incompatible labeler'
+author: 'Patrick Uiterwijk'
+description: 'Label PRs that are backwards incompatible with a specific label'
+inputs:
+  dnf-dependencies:
+    description: 'Fedora packages your compile depends on'
+    # This is just one that we know will be there
+    default: 'rpm'
+  repo-token:
+    description: 'API token to use when tagging'
+    required: true
+  repo-base-ref:
+    description: 'Base ref if none was specified. Default: refs/heads/main'
+    default: refs/heads/main
+  label-patch:
+    description: 'Label to apply to patch PRs'
+    required: false
+  label-non-breaking:
+    description: 'Label to apply to non-breaking PRs'
+    required: false
+  label-technically-breaking:
+    description: 'Label to apply to technically breaking PRs'
+    required: false
+  label-breaking:
+    description: 'Label to apply to breaking PRs'
+    required: false
+outputs: {}
+runs:
+  using: 'docker'
+  image: 'docker://ghcr.io/puiterwijk/action-label-rust-incompatible:v1'
+branding:
+  icon: 'tag'
+  color: 'green'
