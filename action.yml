@@ -1,0 +1,16 @@
+name: 'Rust backwards incompatible labeler'
+author: 'Patrick Uiterwijk'
+description: 'Label PRs that are backwards incompatible with a specific label'
+inputs:
+  repo-token:
+    description: 'API token to use when tagging'
+    required: true
+outputs: {}
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  env:
+    repo_token: ${{ inputs.repo-token }}
+branding:
+  icon: 'tag'
+  color: 'green'
