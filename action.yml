@@ -18,7 +18,7 @@ runs:
   image: 'Dockerfile'
   env:
     repo_token: ${{ inputs.repo-token }}
-  pre-entrypoint: 'dnf install ${{ inputs.dnf-dependencies }}'
+    dnf_dependencies: ${{ inputs.dnf-dependencies }}
 branding:
   icon: 'tag'
   color: 'green'
