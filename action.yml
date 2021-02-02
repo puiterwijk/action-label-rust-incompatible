@@ -15,10 +15,10 @@ inputs:
 outputs: {}
 runs:
   using: 'docker'
-  image: '${{ env.INPUT_RUNNER_IMAGE }}'
+  image: 'Dockerfile'
   env:
-    repo_token: ${{ env.INPUT_REPO_TOKEN }}
-  pre-entrypoint: 'dnf install ${{ env.INPUT_DNF_DEPENDENCIES }}'
+    repo_token: ${{ inputs.repo-token }}
+  pre-entrypoint: 'dnf install ${{ inputs.dnf-dependencies }}'
 branding:
   icon: 'tag'
   color: 'green'

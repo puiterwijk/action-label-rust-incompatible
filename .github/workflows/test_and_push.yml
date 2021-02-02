@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Test
-      - uses: 'puiterwijk/action-label-rust-incompatible@wip'
+      - uses: 'puiterwijk/action-label-rust-incompatible@${{ github.ref }}'
         with:
           dnf-dependencies: 'dnf'
           runner-image: 'Dockerfile'
