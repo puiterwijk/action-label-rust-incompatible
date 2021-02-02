@@ -12,7 +12,7 @@ RUN ~/.cargo/bin/cargo +`cat /tmp/toolchain_version` install --git https://githu
 RUN mkdir /analyzer
 COPY . /analyzer/
 RUN (cd /analyzer && ~/.cargo/bin/cargo build --release) && \
-    mv /analyzer/target/release/action-label-rust-incompatible /usr/local/bin/action-label-rust-incompatible && \
+    mv /analyzer/target/release/analyzer /usr/local/bin/action-label-rust-incompatible && \
     true || rm -rf /analyzer
 
 ENTRYPOINT [ "/usr/local/bin/action-label-rust-incompatible" ]

@@ -1,11 +1,9 @@
 use anyhow::{bail, Context, Result};
 use futures::executor::block_on;
 use serde::Deserialize;
-use std::{
-    env,
-    path::{Path, PathBuf},
-    process::Command,
-};
+use std::{env, path::Path, process::Command};
+
+use action_label_rust_incompatible as lib;
 
 /*
 Example:
@@ -153,38 +151,13 @@ fn main() -> Result<()> {
         ],
     };
 
-    block_on(set_and_remove_labels(
+    block_on(lib::set_and_remove_labels(
         oc_issues,
         pr_num,
         set_label,
         remove_labels,
     ))
     .context("Error setting and removing labels")?;
-
-    Ok(())
-}
-
-async fn set_and_remove_labels(
-    oc_issues: octocrab::issues::IssueHandler<'_>,
-    pr_num: u64,
-    set_label: &Option<String>,
-    remove_labels: Vec<&Option<String>>,
-) -> Result<()> {
-    if let Some(label) = set_label {
-        oc_issues
-            .add_labels(pr_num, &[label.clone()])
-            .await
-            .context("Error setting new label")?;
-    }
-
-    for label in remove_labels {
-        if let Some(label) = label {
-            oc_issues
-                .remove_label(pr_num, label)
-                .await
-                .context("Error removing old labels")?;
-        }
-    }
 
     Ok(())
 }
@@ -200,8 +173,9 @@ fn run(head_sha: &str, head_ref: &str, base_ref: &str, workspace: &str) -> Resul
         &base_sha, &head_sha, &base_ref, &head_ref
     );
 
-    let (base_dir, head_dir) = prepare_directories(workspace, temp_dir.path(), &base_sha, head_sha)
-        .context("Error preparing work directories")?;
+    let (base_dir, head_dir) =
+        lib::prepare_directories(workspace, temp_dir.path(), &base_sha, head_sha)
+            .context("Error preparing work directories")?;
 
     let analysis = run_analysis(&base_dir, &head_dir).context("Error running analysis")?;
 
@@ -226,50 +200,6 @@ fn determine_base_sha(workspace: &str, base_ref: &str) -> Result<String> {
         .stdout;
     let base_sha = String::from_utf8(base_sha).context("Error parsing base sha")?;
     Ok(base_sha.trim().to_string())
-}
-
-fn prepare_directories(
-    workspace: &str,
-    temp_dir: &Path,
-    base_sha: &str,
-    head_sha: &str,
-) -> Result<(PathBuf, PathBuf)> {
-    // Copy the code twice
-    let base_dir = temp_dir.join("base");
-    let head_dir = temp_dir.join("head");
-
-    // Ensure correct repos are checked out
-    println!("Preparing base clone");
-    copy_dir::copy_dir(&workspace, &base_dir).context("Error copying base clone")?;
-    if !Command::new("git")
-        .arg("-C")
-        .arg(&base_dir)
-        .arg("checkout")
-        .arg("--detach")
-        .arg(&base_sha)
-        .status()
-        .context("Error checking out base sha in base dir")?
-        .success()
-    {
-        bail!("Error checking out base sha");
-    }
-
-    println!("Preparing head clone");
-    copy_dir::copy_dir(&workspace, &head_dir).context("Error copying head clone")?;
-    if !Command::new("git")
-        .arg("-C")
-        .arg(&head_dir)
-        .arg("checkout")
-        .arg("--detach")
-        .arg(&head_sha)
-        .status()
-        .context("Error checking out head sha in head dir")?
-        .success()
-    {
-        bail!("Error checking out head sha");
-    }
-
-    Ok((base_dir, head_dir))
 }
 
 fn run_analysis(base_dir: &Path, head_dir: &Path) -> Result<Vec<u8>> {

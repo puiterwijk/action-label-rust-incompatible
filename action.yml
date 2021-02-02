@@ -2,15 +2,23 @@ name: 'Rust backwards incompatible labeler'
 author: 'Patrick Uiterwijk'
 description: 'Label PRs that are backwards incompatible with a specific label'
 inputs:
+  dnf-dependencies:
+    description: 'Fedora packages your compile depends on'
+    # This is just one that we know will be there
+    default: 'rpm'
+  runner-image:
+    description: 'Name of the image to use, leave blank normally'
+    default: 'docker://docker.pkg.github.com/puiterwijk/action-label-rust-incompatible/runner:latest'
   repo-token:
     description: 'API token to use when tagging'
     required: true
 outputs: {}
 runs:
   using: 'docker'
-  image: 'Dockerfile'
+  image: ${{ inputs.runner-image }}
   env:
     repo_token: ${{ inputs.repo-token }}
+  pre-entrypoint: 'dnf install ${{ inputs.dnf-dependencies }}'
 branding:
   icon: 'tag'
   color: 'green'
