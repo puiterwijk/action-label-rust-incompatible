@@ -1,26 +1,15 @@
-name: Test, compile and push
+name: Compile and push
 
 on:
   - push
   - pull_request
 
 jobs:
-  test_compile_and_push:
-    name: Test, compile and push
+  compile_and_push:
+    name: Compile and push
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      # Test
-      - uses: 'puiterwijk/action-label-rust-incompatible@wip'
-        with:
-          dnf-dependencies: 'dnf'
-          runner-image: 'Dockerfile'
-          repo-token: '${{ secrets.GITHUB_TOKEN }}'
-          label-patch: "API/Patch"
-          label-non-breaking: "API/Non-Breaking"
-          label-technically-breaking: "API/Technically-Breaking"
-          label-breaking: "API/Breaking"
-      # Prepare and build
       - uses: actions/cache@v2
         with:
           path: /tmp/.buildx-cache
