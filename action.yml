@@ -24,7 +24,7 @@ inputs:
 outputs: {}
 runs:
   using: 'docker'
-  image: 'docker://docker.pkg.github.com/puiterwijk/action-label-rust-incompatible/runner:latest'
+  image: 'docker://ghcr.io/puiterwijk/action-label-rust-incompatible:latest'
   env:
     repo_token: ${{ inputs.repo-token }}
     dnf_dependencies: ${{ inputs.dnf-dependencies }}
