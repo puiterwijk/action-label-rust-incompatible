@@ -130,16 +130,6 @@ fn main() -> Result<()> {
     let changetype =
         run(&head_sha, &head_ref, &base_ref, &workspace).context("Error running analysis")?;
 
-    if pr_num.is_none() {
-        println!(
-            "Non-PR ({}), so won't update with status: {:?}",
-            &head_ref, changetype
-        );
-        return Ok(());
-    }
-    // Checked just above
-    let pr_num = pr_num.unwrap();
-
     let set_label = match changetype {
         ChangeTypes::Patch => &ct_label_patch,
         ChangeTypes::NonBreaking => &ct_label_non_breaking,
@@ -166,6 +156,18 @@ fn main() -> Result<()> {
             &ct_label_technically_breaking,
         ],
     };
+
+    if pr_num.is_none() {
+        println!(
+            "Non-PR ({}), so won't label with status: {:?}",
+            &head_ref, changetype
+        );
+        println!("Label we would have applied: {:?}", set_label);
+        println!("Labels we would have removed: {:?}", remove_labels);
+        return Ok(());
+    }
+    // Checked just above
+    let pr_num = pr_num.unwrap();
 
     block_on(lib::set_and_remove_labels(
         oc_issues,

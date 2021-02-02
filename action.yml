@@ -12,6 +12,18 @@ inputs:
   repo-token:
     description: 'API token to use when tagging'
     required: true
+  label-patch:
+    description: 'Label to apply to patch PRs'
+    required: false
+  label-non-breaking:
+    description: 'Label to apply to non-breaking PRs'
+    required: false
+  label-technically-breaking:
+    description: 'Label to apply to technically breaking PRs'
+    required: false
+  label-breaking:
+    description: 'Label to apply to breaking PRs'
+    required: false
 outputs: {}
 runs:
   using: 'docker'
@@ -19,6 +31,10 @@ runs:
   env:
     repo_token: ${{ inputs.repo-token }}
     dnf_dependencies: ${{ inputs.dnf-dependencies }}
+    LABEL_PATCH: ${{ inputs.label-patch }}
+    LABEL_NON_BREAKING: ${{ inputs.label-non-breaking }}
+    LABEL_TEHNICALLY_BREAKING: ${{ inputs.label-technicaly-breaking }}
+    LABEL_BREAKING: ${{ inputs.label-breaking }}
 branding:
   icon: 'tag'
   color: 'green'
