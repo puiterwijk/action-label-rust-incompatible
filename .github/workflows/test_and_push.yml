@@ -2,7 +2,6 @@ name: Compile and push
 
 on:
   - push
-  - pull_request
 
 jobs:
   compile_and_push:
@@ -20,7 +19,7 @@ jobs:
           label-non-breaking: "API/Non-Breaking"
           label-technically-breaking: "API/Technically-Breaking"
           label-breaking: "API/Breaking"
-      # Prepare and build
+      # Compile/push
       - uses: actions/cache@v2
         with:
           path: /tmp/.buildx-cache

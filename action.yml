@@ -6,9 +6,6 @@ inputs:
     description: 'Fedora packages your compile depends on'
     # This is just one that we know will be there
     default: 'rpm'
-  runner-image:
-    description: 'Name of the image to use, leave blank normally'
-    default: 'docker://docker.pkg.github.com/puiterwijk/action-label-rust-incompatible/runner:latest'
   repo-token:
     description: 'API token to use when tagging'
     required: true
@@ -27,7 +24,7 @@ inputs:
 outputs: {}
 runs:
   using: 'docker'
-  image: 'Dockerfile'
+  image: 'docker://docker.pkg.github.com/puiterwijk/action-label-rust-incompatible/runner:latest'
   env:
     repo_token: ${{ inputs.repo-token }}
     dnf_dependencies: ${{ inputs.dnf-dependencies }}
