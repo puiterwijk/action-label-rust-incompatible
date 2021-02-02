@@ -60,6 +60,7 @@ struct SemverResult {
 
 fn main() -> Result<()> {
     // Get environment arguments
+    let dnf_deps = env::var("dnf_dependencies").ok();
     let github_token = env::var("repo_token").expect("No repo token provided");
     let head_sha = env::var("GITHUB_SHA").expect("No head sha specified");
     let head_ref = env::var("GITHUB_REF").expect("No head ref specified");
@@ -100,6 +101,21 @@ fn main() -> Result<()> {
     }
     let owner = repo[0];
     let repo = repo[1];
+
+    // Run DNF install
+    if let Some(deps) = dnf_deps {
+        let deps = deps.split(' ');
+        if !Command::new("dnf")
+            .arg("install")
+            .arg("-y")
+            .args(deps)
+            .status()
+            .context("Error running DNF install")?
+            .success()
+        {
+            bail!("Error installing DNF dependencies");
+        }
+    }
 
     // Initialize OctoCrab
     let oc = octocrab::OctocrabBuilder::new()
