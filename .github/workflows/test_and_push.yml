@@ -15,6 +15,10 @@ jobs:
           dnf-dependencies: 'dnf'
           runner-image: 'Dockerfile'
           repo-token: '${{ secrets.GITHUB_TOKEN }}'
+          label-patch: "API/Patch"
+          label-non-breaking: "API/Non-Breaking"
+          label-technically-breaking: "API/Technically-Breaking"
+          label-breaking: "API/Breaking"
       # Prepare and build
       - uses: actions/cache@v2
         with:
