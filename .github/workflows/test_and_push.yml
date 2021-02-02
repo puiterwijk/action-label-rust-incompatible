@@ -10,6 +10,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      # Test
+      - uses: puiterwijk/action-label-rust-incompatible@wip
+        with:
+          dnf-dependencies: 'dnf'
+          runner-image: 'Dockerfile'
+          repo-token: '${{ secrets.GITHUB_TOKEN }}'
+          label-patch: "API/Patch"
+          label-non-breaking: "API/Non-Breaking"
+          label-technically-breaking: "API/Technically-Breaking"
+          label-breaking: "API/Breaking"
+      # Prepare and build
       - uses: actions/cache@v2
         with:
           path: /tmp/.buildx-cache
@@ -23,6 +34,7 @@ jobs:
           registry: docker.pkg.github.com
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      # TODO: Only do if we're on release tag
       - if: ${{ github.event_name == 'push' }}
         uses: docker/build-push-action@v2
         with:
