@@ -77,6 +77,25 @@ fn main() -> Result<()> {
     let ct_label_technically_breaking = env::var("LABEL_TECHNICALLY_BREAKING").ok();
     let ct_label_breaking = env::var("LABEL_BREAKING").ok();
 
+    println!("dnf_deps: {:?}", &dnf_deps);
+    // No, we are not printing github_token.... Nice try.
+    println!("head_sha: {}", &head_sha);
+    println!("head_ref: {}", &head_ref);
+    println!("head_ref_parts: {:?}", &head_ref_parts);
+    println!("base_ref: {}", &base_ref);
+    println!("workspace: {}", &workspace);
+    println!("repo: {}", &repo);
+    println!("gh_server: {}", &gh_server);
+
+    // Labels
+    println!("Label: Patch: {:?}", ct_label_patch);
+    println!("Label: Non-Breaking: {:?}", ct_label_non_breaking);
+    println!(
+        "Label: Technically-Breaking: {:?}",
+        ct_label_technically_breaking
+    );
+    println!("Label: Breaking: {:?}", ct_label_breaking);
+
     // Compute PR number
     // Example: refs/pull/42/merge
     let pr_num = if head_ref_parts.len() == 4
