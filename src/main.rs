@@ -60,22 +60,28 @@ struct SemverResult {
 
 fn main() -> Result<()> {
     // Get environment arguments
-    let dnf_deps = env::var("dnf_dependencies").ok();
-    let github_token = env::var("repo_token").expect("No repo token provided");
+    let dnf_deps = env::var("INPUT_DNF-DEPENDENCIES").ok();
+    let github_token = env::var("INPUT_REPO-TOKEN").expect("No repo token provided");
     let head_sha = env::var("GITHUB_SHA").expect("No head sha specified");
     let head_ref = env::var("GITHUB_REF").expect("No head ref specified");
     let head_ref_parts: Vec<&str> = head_ref.split('/').collect();
     // TODO: expect() for PRs
-    let base_ref = env::var("GITHUB_BASE_REF").unwrap_or("main".to_string());
+    let base_ref = env::var("GITHUB_BASE_REF").expect("No base ref specified");
     let workspace = env::var("GITHUB_WORKSPACE").expect("No workspace provided");
     let repo = env::var("GITHUB_REPOSITORY").expect("No repository provided");
     let gh_server = env::var("GITHUB_SERVER_URL").expect("No GitHub server URL provided");
 
     // Get label configurations
-    let ct_label_patch = env::var("LABEL_PATCH").ok();
-    let ct_label_non_breaking = env::var("LABEL_NON_BREAKING").ok();
-    let ct_label_technically_breaking = env::var("LABEL_TECHNICALLY_BREAKING").ok();
-    let ct_label_breaking = env::var("LABEL_BREAKING").ok();
+    let ct_label_patch = env::var("INPUT_LABEL-PATCH").ok();
+    let ct_label_non_breaking = env::var("INPUT_LABEL-NON-BREAKING").ok();
+    let ct_label_technically_breaking = env::var("INPUT_LABEL-TECHNICALLY-BREAKING").ok();
+    let ct_label_breaking = env::var("INPUT_LABEL-BREAKING").ok();
+
+    let mut base_ref = base_ref;
+    if base_ref.is_empty() {
+        base_ref = "refs/heads/main".to_string()
+    }
+    let base_ref = base_ref;
 
     println!("dnf_deps: {:?}", &dnf_deps);
     // No, we are not printing github_token.... Nice try.

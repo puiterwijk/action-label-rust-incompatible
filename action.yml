@@ -25,13 +25,6 @@ outputs: {}
 runs:
   using: 'docker'
   image: 'docker://ghcr.io/puiterwijk/action-label-rust-incompatible:latest'
-  env:
-    repo_token: ${{ inputs.repo-token }}
-    dnf_dependencies: ${{ inputs.dnf-dependencies }}
-    LABEL_PATCH: ${{ inputs.label-patch }}
-    LABEL_NON_BREAKING: ${{ inputs.label-non-breaking }}
-    LABEL_TEHNICALLY_BREAKING: ${{ inputs.label-technicaly-breaking }}
-    LABEL_BREAKING: ${{ inputs.label-breaking }}
 branding:
   icon: 'tag'
   color: 'green'

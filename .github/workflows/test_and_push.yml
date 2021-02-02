@@ -13,7 +13,6 @@ jobs:
       - uses: puiterwijk/action-label-rust-incompatible@wip
         with:
           dnf-dependencies: 'dnf'
-          runner-image: 'Dockerfile'
           repo-token: '${{ secrets.GITHUB_TOKEN }}'
           label-patch: "API/Patch"
           label-non-breaking: "API/Non-Breaking"
