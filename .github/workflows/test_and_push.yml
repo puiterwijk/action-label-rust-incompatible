@@ -9,6 +9,7 @@ jobs:
     name: Test, compile and push
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       # Test
       - uses: 'puiterwijk/action-label-rust-incompatible@wip'
         with:
