@@ -79,6 +79,7 @@ fn main() -> Result<()> {
 
     let mut base_ref = base_ref;
     if base_ref.is_empty() {
+        println!("No base ref, assuming refs/heads/main");
         base_ref = "refs/heads/main".to_string()
     }
     let base_ref = base_ref;
@@ -210,6 +211,7 @@ fn run(head_sha: &str, head_ref: &str, base_ref: &str, workspace: &str) -> Resul
         tempdir::TempDir::new("analyzer_work_dir").context("Error creating temporary directory")?;
 
     let base_sha = determine_base_sha(workspace, base_ref).context("Error determining base SHA")?;
+    println!("Base sha: {}", &base_sha);
 
     println!(
         "Comparing {}..{} ({} -> {})",

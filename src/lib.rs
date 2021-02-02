@@ -47,6 +47,7 @@ pub fn prepare_directories(
         .arg(&base_dir)
         .arg("checkout")
         .arg("--detach")
+        .arg("--force")
         .arg(&base_sha)
         .status()
         .context("Error checking out base sha in base dir")?
@@ -62,6 +63,7 @@ pub fn prepare_directories(
         .arg(&head_dir)
         .arg("checkout")
         .arg("--detach")
+        .arg("--force")
         .arg(&head_sha)
         .status()
         .context("Error checking out head sha in head dir")?
