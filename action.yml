@@ -9,6 +9,9 @@ inputs:
   repo-token:
     description: 'API token to use when tagging'
     required: true
+  repo-base-ref:
+    description: 'Base ref if none was specified. Default: refs/heads/main'
+    default: refs/heads/main
   label-patch:
     description: 'Label to apply to patch PRs'
     required: false
@@ -24,7 +27,7 @@ inputs:
 outputs: {}
 runs:
   using: 'docker'
-  image: 'docker://ghcr.io/puiterwijk/action-label-rust-incompatible:latest'
+  image: 'docker://ghcr.io/puiterwijk/action-label-rust-incompatible:v1'
 branding:
   icon: 'tag'
   color: 'green'

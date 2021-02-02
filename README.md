@@ -7,6 +7,9 @@ This action can tag PRs with information on whether the PR includes different ty
 ### `repo-token`
 **Required** The repository token to use.
 
+### `repo-base-ref`
+The base ref to use if none was specified (i.e. during push), default: refs/heads/main.
+
 ### `label-patch`
 The label to apply to PRs with Patch changes.
 
